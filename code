@@ -1,0 +1,122 @@
+// Define all the pins of the Arduino
+#define enaPin 3
+#define in1 5
+#define in2 6
+#define in3 9
+#define in4 10
+#define enbPin 11
+#define fan1 7
+#define fan2 8
+#define IRsensor 12
+#define trigPin 2
+#define echoPin 4
+
+void setup() {
+  
+  Serial.begin(9600);
+
+  // Configure the pins as INPUT or OUTPUT
+  pinMode(enaPin, OUTPUT);
+  pinMode(enbPin, OUTPUT);
+  pinMode(in1, OUTPUT);
+  pinMode(in2, OUTPUT);
+  pinMode(in3, OUTPUT);
+  pinMode(in4, OUTPUT);
+  pinMode(fan1,OUTPUT);
+  pinMode(fan2,OUTPUT);
+  pinMode(IRsensor,INPUT);
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);    
+}
+
+void loop() {
+
+  // Clears the trigPin
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  // Sets the trigPin on HIGH state for 10 micro seconds
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  // Reads the echoPin, returns the sound wave travel time in microseconds
+  long duration = pulseIn(echoPin, HIGH);
+  // Calculating the distance
+  int distance= duration*0.034/2;
+  // Prints the distance on the Serial Monitor
+  Serial.print("Distance: ");
+  Serial.println(distance);
+
+  int Trash = digitalRead(IRsensor);
+
+  if (Trash == 1 && distance > 5) {
+    Forward();
+  }
+  else if (Trash == 1 && distance <= 5) {
+    Stop();
+    Backward();
+    delay(5000);
+    Left();
+    delay(3000);
+    Stop();
+  }
+  else if (Trash == 0) {
+    Stop();
+    RunFan();
+    delay(3000);
+    StopFan();
+  }
+}
+
+// Functions to change the direction
+void Backward() {
+  digitalWrite(enaPin,HIGH);
+  digitalWrite(enbPin,HIGH);
+  digitalWrite(in1,LOW);
+  digitalWrite(in2,HIGH);
+  digitalWrite(in3,LOW);
+  digitalWrite(in4,HIGH);
+}
+
+ void Forward() {
+  digitalWrite(enaPin,HIGH);
+  digitalWrite(enbPin,HIGH);
+  digitalWrite(in1,HIGH);
+  digitalWrite(in2,LOW);
+  digitalWrite(in3,HIGH);
+  digitalWrite(in4,LOW);
+}
+
+ void Stop() {
+  digitalWrite(in1,LOW);
+  digitalWrite(in2,LOW);
+  digitalWrite(in3,LOW);
+  digitalWrite(in4,LOW);
+}
+
+void Left() {
+  digitalWrite(enaPin,HIGH);
+  digitalWrite(enbPin,HIGH);
+  digitalWrite(in1,LOW);
+  digitalWrite(in2,LOW);
+  digitalWrite(in3,HIGH);
+  digitalWrite(in4,LOW);
+}
+
+void Right() {
+  digitalWrite(enaPin,HIGH);
+  digitalWrite(enbPin,HIGH);
+  digitalWrite(in1,HIGH);
+  digitalWrite(in2,LOW);
+  digitalWrite(in3,LOW);
+  digitalWrite(in4,LOW);
+}
+
+void StopFan() {
+  digitalWrite(fan1,LOW);
+  digitalWrite(fan2,LOW);
+}
+
+void RunFan() {
+  digitalWrite(fan1,HIGH);
+  digitalWrite(fan2,LOW);
+}
