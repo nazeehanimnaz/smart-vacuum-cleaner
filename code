@@ -10,6 +10,7 @@
 #define IRsensor 12
 #define trigPin 2
 #define echoPin 4
+#define LED 13
 
 void setup() {
   
@@ -46,25 +47,31 @@ void loop() {
   Serial.print("Distance: ");
   Serial.println(distance);
 
-  int Trash = digitalRead(IRsensor);
+  int Trash = digitalRead(IRsensor);    //Get reading from IR sensor
 
-  if (Trash == 1 && distance > 5) {
-    Forward();
-  }
-  else if (Trash == 1 && distance <= 5) {
-    Stop();
-    Backward();
-    delay(5000);
-    Left();
-    delay(3000);
-    Stop();
-  }
-  else if (Trash == 0) {
+  if (Trash == 0) {         //When Trash detected
     Stop();
     RunFan();
+    digitalWrite(LED,HIGH);
     delay(3000);
     StopFan();
+    digitalWrite(LED,LOW);
   }
+
+  else if (Trash == 1) {    //When Trash not detected
+
+    if (distance > 30){
+      Forward();
+      delay(500);
+      Stop();
+    }
+    else if (distance <= 30) {
+      Backward();
+      delay(1000);
+      Left();
+      delay(1000);
+      Stop();
+    }
 }
 
 // Functions to change the direction
