@@ -76,8 +76,8 @@ void loop() {
 
 // Functions to change the direction
 void Backward() {
-  digitalWrite(enaPin,150);
-  digitalWrite(enbPin,150);
+  digitalWrite(enaPin,180);
+  digitalWrite(enbPin,180);
   digitalWrite(in1,LOW);
   digitalWrite(in2,HIGH);
   digitalWrite(in3,LOW);
@@ -85,8 +85,8 @@ void Backward() {
 }
 
  void Forward() {
-  digitalWrite(enaPin,150);
-  digitalWrite(enbPin,150);
+  digitalWrite(enaPin,180);
+  digitalWrite(enbPin,180);
   digitalWrite(in1,HIGH);
   digitalWrite(in2,LOW);
   digitalWrite(in3,HIGH);
