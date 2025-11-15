@@ -73,6 +73,7 @@ void loop() {
       Stop();
     }
 }
+}
 
 // Functions to change the direction
 void Backward() {
