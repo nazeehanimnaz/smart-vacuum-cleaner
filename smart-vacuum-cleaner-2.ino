@@ -76,7 +76,7 @@ void loop() {
 
     if (distance > 30){
       Forward();
-      //delay(500);
+      //delay(100);
       //Stop();
     }
     else if (distance <= 30) {
