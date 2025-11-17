@@ -1,32 +1,28 @@
-// Install library IRremote by Armin Joachimsmeyer 
-// This code supports version 4.4.1 of the above library
-//#include <IRremote.hpp>
-
-// Define IR receiver pin
-//#define irReceiver 12 
-
-// Define all the pins of the motor driver module
+// Define all the pins of the motor driver module L298N
 #define enaPin 3
 #define in1 5
 #define in2 6
 #define in3 9
 #define in4 10
 #define enbPin 11
+
+// Define the pins fan/motor driver L9110S
 #define fan1 7
 #define fan2 8
+
+// Define the pin for IR sensor
 #define IRsensor 12
+
+// Pins for the ultrasonic sensor
 #define trigPin 2
 #define echoPin 4
-#define IRsensorS 13
 
 void setup() {
-  //Serial.begin(115200); // Establish serial communication
-  //IrReceiver.begin(irReceiver, ENABLE_LED_FEEDBACK); // Start the receiver
 
-  Serial.begin(9600);
+  Serial.begin(9600); // Start the serial monitor 
 
-  // Configure the pins as INPUT or OUTPUT
-  //pinMode(irReceiver, INPUT);
+
+// Define if pins are input or output
   pinMode(enaPin, OUTPUT);
   pinMode(enbPin, OUTPUT);
   pinMode(in1, OUTPUT);
@@ -38,10 +34,11 @@ void setup() {
   pinMode(IRsensor,INPUT);
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
-  pinMode(IRsensorS,INPUT);
 }
 
 void loop() {
+  
+  // CODE FOR ULTRASONIC SENSOR TO DETECT A BARRIER IN FRONT OF IT
   
   // Clears the trigPin
   digitalWrite(trigPin, LOW);
@@ -59,11 +56,10 @@ void loop() {
   Serial.println(distance);
 
   int Trash = digitalRead(IRsensor);    //Get reading from IR sensor
-  //int barrier = analogRead(IRsensorS);
 
-   // Serial.print("Barrier: ");
-  //Serial.println(barrier);
-    //  Serial.print("\n");
+  
+
+  //CODE AS TO HOW BOB SHOULD WORK
 
   if (Trash == 0) {         //When Trash detected
     Stop();
@@ -76,7 +72,7 @@ void loop() {
 
     if (distance > 30){
       Forward();
-      //delay(100);
+      delay(100);
       //Stop();
     }
     else if (distance <= 30) {
@@ -85,13 +81,13 @@ void loop() {
       Stop();
       delay(500);
       Left();
-      delay(500);
+      delay(200);
       Stop();
     }
   }
 }
 
-// Functions to change the direction
+// FUNCTIONS TO CHANGE THE DIRECTION OF THE WHEELS
 void Backward() {
   analogWrite(enaPin,180);
   analogWrite(enbPin,180);
@@ -134,6 +130,9 @@ void Left() {
   digitalWrite(in3,LOW);
   digitalWrite(in4,LOW);
 }
+
+
+// FUNCTIONS FOR THE FAN TO ROTATE AND STOP
 
 void StopFan() {
   digitalWrite(fan1,LOW);
